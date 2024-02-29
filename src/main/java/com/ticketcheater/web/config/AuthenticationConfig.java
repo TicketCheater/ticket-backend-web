@@ -1,7 +1,7 @@
 package com.ticketcheater.web.config;
 
-import com.ticketcheater.web.jwt.JwtTokenFilter;
 import com.ticketcheater.web.exception.CustomAuthenticationEntryPoint;
+import com.ticketcheater.web.jwt.JwtTokenFilter;
 import com.ticketcheater.web.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

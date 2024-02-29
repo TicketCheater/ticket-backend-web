@@ -2,7 +2,6 @@ package com.ticketcheater.web.jwt;
 
 import com.ticketcheater.web.dto.UserDTO;
 import com.ticketcheater.web.service.UserService;
-import com.ticketcheater.web.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
