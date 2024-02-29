@@ -24,7 +24,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+@DisplayName("비즈니스 로직 - 게임")
 @SpringBootTest
 class GameServiceTest {
 
@@ -39,7 +39,7 @@ class GameServiceTest {
 
     @DisplayName("관리자가 안정적으로 게임을 생성한다")
     @Test
-    void givenAdminUserWithGame_whenSaving_thenSavesGame() {
+    void givenGameInfo_whenCreating_thenSavesGame() {
         String username = "master";
         String category = "e_sports";
         GameDTO dto = GameDTOFixture.get(category);
@@ -49,9 +49,9 @@ class GameServiceTest {
         Assertions.assertDoesNotThrow(() -> sut.createGame(username, dto));
     }
 
-    @DisplayName("관리자가 아닌데 게임을 생성할 경우 오류를 내뱉는다")
+    @DisplayName("관리자가 아닌 유저가 게임을 생성할 경우 오류를 내뱉는다")
     @Test
-    void givenNotAdminUser_whenSaving_thenThrowsError() {
+    void givenNonAdminUser_whenCreating_thenThrowsError() {
         String username = "username";
         GameDTO dto = mock(GameDTO.class);
 
@@ -65,7 +65,7 @@ class GameServiceTest {
 
     @DisplayName("카테고리가 적절하지 않은 게임을 생성할 경우 오류를 내뱉는다")
     @Test
-    void givenInvalidCategory_whenSaving_thenThrowsError() {
+    void givenInvalidCategory_whenCreating_thenThrowsError() {
         String username = "master";
         String category = "wrong";
         GameDTO dto = GameDTOFixture.get(category);
@@ -80,7 +80,7 @@ class GameServiceTest {
 
     @DisplayName("게임을 안정적으로 조회한다")
     @Test
-    void givenDefaultPage_whenSearching_thenReturnGames() {
+    void givenNothing_whenSearching_thenReturnGames() {
         Pageable pageable = mock(Pageable.class);
 
         when(gameRepository.findAll(pageable)).thenReturn(Page.empty());
@@ -88,7 +88,7 @@ class GameServiceTest {
         Assertions.assertDoesNotThrow(() -> sut.getGames(pageable));
     }
 
-    @DisplayName("카테고리 별 게임을 안정적으로 조회한다")
+    @DisplayName("카테고리가 적절한 게임을 안정적으로 조회한다")
     @Test
     void givenValidCategory_whenSearching_thenReturnGames() {
         String category = "e_sports";
@@ -113,7 +113,7 @@ class GameServiceTest {
 
     @DisplayName("관리자가 안정적으로 게임을 수정한다")
     @Test
-    void givenAdminUserGame_whenUpdating_thenUpdatesGame() {
+    void givenGameInfo_whenUpdating_thenUpdatesGame() {
         String username = "master";
         Long gameId = 1L;
         String category = "e_sports";
@@ -125,9 +125,9 @@ class GameServiceTest {
         Assertions.assertDoesNotThrow(() -> sut.updateGame(username, gameId, dto));
     }
 
-    @DisplayName("관리자가 아닌데 게임을 수정할 경우 오류를 내뱉는다")
+    @DisplayName("관리자가 아닌 유저가 게임을 수정할 경우 오류를 내뱉는다")
     @Test
-    void givenNotAdminUserWithGame_whenUpdating_thenThrowsError() {
+    void givenNonAdminUser_whenUpdating_thenThrowsError() {
         String username = "username";
         Long gameId = 1L;
         GameDTO dto = mock(GameDTO.class);
@@ -143,7 +143,7 @@ class GameServiceTest {
 
     @DisplayName("카테고리가 적절하지 않은 게임을 수정할 경우 오류를 내뱉는다")
     @Test
-    void givenInvalidCategoryWithGame_whenUpdating_thenThrowsError() {
+    void givenInvalidCategory_whenUpdating_thenThrowsError() {
         String username = "username";
         Long gameId = 1L;
         String category = "wrong";
@@ -160,7 +160,7 @@ class GameServiceTest {
 
     @DisplayName("DB 에 없는 게임을 수정할 경우 오류를 내뱉는다")
     @Test
-    void givenNotExistingGameId_whenUpdating_thenThrowsError() {
+    void givenNonExistentGameId_whenUpdating_thenThrowsError() {
         String username = "username";
         Long gameId = 1L;
         GameDTO dto = mock(GameDTO.class);
