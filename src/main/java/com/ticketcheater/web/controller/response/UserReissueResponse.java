@@ -8,8 +8,8 @@ import lombok.Getter;
 public class UserReissueResponse {
     private String accessToken;
 
-    public static UserReissueResponse from(String accesToken) {
-        return new UserReissueResponse(accesToken);
+    public static UserReissueResponse from(String accessToken) {
+        return new UserReissueResponse(accessToken);
     }
 
 }

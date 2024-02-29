@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("컨트롤러 - 회원")
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -46,7 +47,7 @@ class UserControllerTest {
     @DisplayName("회원가입이 정상동작한다")
     @Test
     @WithAnonymousUser
-    void givenUser_whenSaving_thenSavesUser() throws Exception {
+    void givenUser_whenSignup_thenSavesUser() throws Exception {
         String username = "username";
         String password = "password";
         String email = "email";
@@ -61,10 +62,10 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("중복된 회원정보를 입력시 회원가입은 오류를 내뱉는다")
+    @DisplayName("중복된 회원정보로 회원가입할 경우 오류를 내뱉는다")
     @Test
     @WithAnonymousUser
-    void givenDuplicatedUser_whenSaving_thenThrowsError() throws Exception {
+    void givenDuplicatedUser_whenSignup_thenThrowsError() throws Exception {
         String username = "username";
         String password = "password";
         String email = "email";
@@ -82,7 +83,7 @@ class UserControllerTest {
     @DisplayName("로그인이 정상동작한다")
     @Test
     @WithAnonymousUser
-    void givenUser_whenLogin_thenReceivesToken() throws Exception {
+    void givenUser_whenLogin_thenReturnsToken() throws Exception {
         String username = "username";
         String password = "password";
 
@@ -98,7 +99,7 @@ class UserControllerTest {
     @DisplayName("존재하지 않는 유저가 로그인 시 오류를 내뱉는다")
     @Test
     @WithAnonymousUser
-    void givenNotFoundUser_whenLogin_thenThrowsError() throws Exception {
+    void givenNonExistentUser_whenLogin_thenThrowsError() throws Exception {
         String username = "username";
         String password = "password";
 
@@ -111,7 +112,7 @@ class UserControllerTest {
                 .andExpect(status().is(ErrorCode.USER_NOT_FOUND.getStatus().value()));
     }
 
-    @DisplayName("다른 비밀번호를 입력한 유저가 로그인 시 오류를 내뱉는다")
+    @DisplayName("다른 비밀번호를 입력한 유저가 로그인할 경우 오류를 내뱉는다")
     @Test
     @WithAnonymousUser
     void givenWrongPasswordUser_whenLogin_thenThrowsError() throws Exception {
@@ -143,7 +144,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("인증되지 않은 사용자가 Access 토큰 재발급을 요청하면 에러를 내뱉는다")
+    @DisplayName("로그인하지 않은 유저가 Access 토큰 재발급할 경우 오류를 내뱉는다")
     @Test
     @WithAnonymousUser
     void givenUnauthorizedUser_whenReissue_thenThrowsError() throws Exception {
@@ -169,14 +170,14 @@ class UserControllerTest {
     @DisplayName("로그아웃이 정상동작한다")
     @Test
     @WithMockUser
-    void givenAuthorizedUser_whenLogout_thenDeletesToken() throws Exception {
+    void givenNothing_whenLogout_thenDeletesToken() throws Exception {
         mvc.perform(post("/users/logout")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("인증되지 않은 사용자가 로그아웃을 요청하면 에러를 내뱉는다")
+    @DisplayName("로그인하지 않은 유저가 로그아웃할 경우 오류를 내뱉는다")
     @Test
     @WithAnonymousUser
     void givenUnauthorizedUser_whenLogout_thenThrowsError() throws Exception {

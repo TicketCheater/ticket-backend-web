@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@DisplayName("비즈니스 로직 - 회원")
 @ExtendWith(TestContainerConfig.class)
 @SpringBootTest
 class UserServiceTest {
@@ -34,7 +35,7 @@ class UserServiceTest {
 
     @DisplayName("회원가입이 정상동작한다")
     @Test
-    void givenUser_whenSaving_thenSavesUser() {
+    void givenUser_whenSignup_thenSavesUser() {
         String username = "username";
         String password = "password";
         String email = "email";
@@ -53,9 +54,9 @@ class UserServiceTest {
         Assertions.assertDoesNotThrow(() -> sut.signup(username, password, email, nickname));
     }
 
-    @DisplayName("중복된 회원정보를 입력시 회원가입은 오류를 내뱉는다")
+    @DisplayName("중복된 회원정보로 회원가입할 경우 오류를 내뱉는다")
     @Test
-    void givenDuplicatedUser_whenSaving_thenThrowsError() {
+    void givenDuplicatedUser_whenSignup_thenThrowsError() {
         String username = "username";
         String password = "password";
         String email = "email";
@@ -72,7 +73,7 @@ class UserServiceTest {
 
     @DisplayName("로그인이 정상동작한다")
     @Test
-    void givenUser_whenLogin_thenReceivesToken() {
+    void givenUser_whenLogin_thenReturnsToken() {
         String username = "username";
         String password = "password";
         String email = "email";
@@ -90,9 +91,9 @@ class UserServiceTest {
         Assertions.assertDoesNotThrow(() -> sut.login(username, password));
     }
 
-    @DisplayName("존재하지 않는 유저가 로그인 시 오류를 내뱉는다")
+    @DisplayName("존재하지 않는 유저가 로그인할 경우 오류를 내뱉는다")
     @Test
-    void givenNotFoundUser_whenLogin_thenThrowsError() {
+    void givenNonExistentUser_whenLogin_thenThrowsError() {
         String username = "username";
         String password = "password";
 
@@ -104,7 +105,7 @@ class UserServiceTest {
         Assertions.assertEquals(ErrorCode.USER_NOT_FOUND, exception.getCode());
     }
 
-    @DisplayName("다른 비밀번호를 입력한 유저가 로그인 시 오류를 내뱉는다")
+    @DisplayName("다른 비밀번호를 입력한 유저가 로그인할 경우 오류를 내뱉는다")
     @Test
     void givenWrongPasswordUser_whenLogin_thenThrowsError() {
         String username = "username";

@@ -1,6 +1,7 @@
 package com.ticketcheater.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ticketcheater.web.entity.User;
 import com.ticketcheater.web.entity.UserRole;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO implements UserDetails {
 
     private Long id;

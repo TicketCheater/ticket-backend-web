@@ -2,26 +2,25 @@ package com.ticketcheater.web.jwt;
 
 import com.ticketcheater.web.exception.ErrorCode;
 import com.ticketcheater.web.exception.TicketApplicationException;
+import com.ticketcheater.web.repository.TokenCacheRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final TokenCacheRepository tokenCacheRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -68,16 +67,16 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken(String username) {
         String refreshToken = doGenerateToken(username, refreshExpiredTimeMs, refreshKey);
-        redisTemplate.opsForValue().set(username, refreshToken, refreshExpiredTimeMs, TimeUnit.MILLISECONDS);
+        tokenCacheRepository.setToken(username, refreshKey, refreshExpiredTimeMs);
         return refreshToken;
     }
 
     public void deleteRefreshToken(String username) {
-        redisTemplate.opsForValue().getAndDelete(username);
+        tokenCacheRepository.deleteToken(username);
     }
 
     public String reissueAccessToken(String username, String rtk) {
-        String refreshToken = redisTemplate.opsForValue().get(username);
+        String refreshToken = tokenCacheRepository.getToken(username);
         if (Objects.isNull(refreshToken)) {
             throw new TicketApplicationException(
                     ErrorCode.EXPIRED_TOKEN, String.format("The refresh token of username %s has expired", username)

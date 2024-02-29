@@ -3,7 +3,6 @@ package com.ticketcheater.web.exception;
 import com.ticketcheater.web.controller.response.Response;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
