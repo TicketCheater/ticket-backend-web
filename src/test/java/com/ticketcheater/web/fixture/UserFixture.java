@@ -16,4 +16,15 @@ public class UserFixture {
         return user;
     }
 
+    public static User get(UserRole userRole) {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setPassword("password");
+        user.setEmail("email@email.com");
+        user.setNickname("nickname");
+        user.setRole(userRole);
+        return user;
+    }
+
 }

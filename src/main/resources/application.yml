@@ -16,6 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  sql.init.mode: always
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
