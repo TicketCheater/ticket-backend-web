@@ -4,6 +4,7 @@ import com.ticketcheater.web.config.TestContainerConfig;
 import com.ticketcheater.web.exception.ErrorCode;
 import com.ticketcheater.web.exception.TicketApplicationException;
 import com.ticketcheater.web.fixture.UserFixture;
+import com.ticketcheater.web.repository.UserCacheRepository;
 import com.ticketcheater.web.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,9 @@ class UserServiceTest {
 
     @MockBean
     UserRepository userRepository;
+
+    @MockBean
+    UserCacheRepository userCacheRepository;
 
     @MockBean
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -97,6 +101,7 @@ class UserServiceTest {
         String username = "username";
         String password = "password";
 
+        when(userCacheRepository.getUser(username)).thenReturn(Optional.empty());
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
         TicketApplicationException exception = Assertions.assertThrows(TicketApplicationException.class,

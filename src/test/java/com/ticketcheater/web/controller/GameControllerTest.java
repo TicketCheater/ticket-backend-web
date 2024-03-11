@@ -17,7 +17,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -48,7 +49,7 @@ class GameControllerTest {
 
         mvc.perform(post("/admin/open")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -61,7 +62,7 @@ class GameControllerTest {
 
         mvc.perform(post("/admin/open")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_TOKEN.getStatus().value()));
     }
@@ -74,7 +75,7 @@ class GameControllerTest {
 
         mvc.perform(post("/admin/open")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getStatus().value()));
     }
@@ -87,7 +88,7 @@ class GameControllerTest {
 
         mvc.perform(post("/admin/open")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("wrong", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("wrong", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.CATEGORY_NOT_FOUND.getStatus().value()));
     }
@@ -163,7 +164,7 @@ class GameControllerTest {
 
         mvc.perform(put("/admin/update/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -176,7 +177,7 @@ class GameControllerTest {
 
         mvc.perform(put("/admin/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_TOKEN.getStatus().value()));
     }
@@ -189,7 +190,7 @@ class GameControllerTest {
 
         mvc.perform(put("/admin/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("e_sports", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getStatus().value()));
     }
@@ -202,7 +203,7 @@ class GameControllerTest {
 
         mvc.perform(put("/admin/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new GameRequest("wrong", "title", "home", "away", "place", LocalDateTime.now()))))
+                        .content(objectMapper.writeValueAsBytes(new GameRequest("wrong", "title", "home", "away", "place", Timestamp.from(Instant.now())))))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.CATEGORY_NOT_FOUND.getStatus().value()));
     }
