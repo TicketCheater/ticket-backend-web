@@ -2,6 +2,8 @@ package com.ticketcheater.web.fixture;
 
 import com.ticketcheater.web.dto.GameDTO;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class GameDTOFixture {
@@ -13,7 +15,7 @@ public class GameDTOFixture {
                 "home",
                 "away",
                 "place",
-                LocalDateTime.now()
+                Timestamp.from(Instant.now())
         );
     }
 }

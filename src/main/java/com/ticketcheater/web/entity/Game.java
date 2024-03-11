@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -29,9 +29,9 @@ public class Game extends BaseEntity {
 
     @Column(name = "place") private String place;
 
-    @Column(name = "started_at") private LocalDateTime startedAt;
+    @Column(name = "started_at") private Timestamp startedAt;
 
-    public static Game of(Category category, String title, String home, String away, String place, LocalDateTime startedAt) {
+    public static Game of(Category category, String title, String home, String away, String place, Timestamp startedAt) {
         Game game = new Game();
         game.setCategory(category);
         game.setTitle(title);

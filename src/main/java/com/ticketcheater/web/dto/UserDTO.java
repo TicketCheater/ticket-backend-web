@@ -6,18 +6,20 @@ import com.ticketcheater.web.entity.User;
 import com.ticketcheater.web.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO implements UserDetails {
 
@@ -27,9 +29,9 @@ public class UserDTO implements UserDetails {
     private String email;
     private String nickname;
     private UserRole role;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime removedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp removedAt;
 
     public static UserDTO from(User user) {
         return new UserDTO(
