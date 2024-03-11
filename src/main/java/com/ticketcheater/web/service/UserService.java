@@ -6,6 +6,7 @@ import com.ticketcheater.web.exception.ErrorCode;
 import com.ticketcheater.web.exception.TicketApplicationException;
 import com.ticketcheater.web.jwt.JwtTokenProvider;
 import com.ticketcheater.web.jwt.TokenDTO;
+import com.ticketcheater.web.repository.UserCacheRepository;
 import com.ticketcheater.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserCacheRepository userCacheRepository;
     private final BCryptPasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -33,15 +35,16 @@ public class UserService {
     }
 
     public UserDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).map(UserDTO::from).orElseThrow(
-                () -> new TicketApplicationException(ErrorCode.USER_NOT_FOUND, String.format("username is %s", username))
-        );
+        return userCacheRepository.getUser(username).orElseGet(
+                () -> userRepository.findByUsername(username).map(UserDTO::from).orElseThrow(
+                        () -> new TicketApplicationException(ErrorCode.USER_NOT_FOUND, String.format("username is %s", username))
+        ));
     }
 
     public TokenDTO login(String username, String password) {
-        UserDTO user = loadUserByUsername(username);
-
-        if (!encoder.matches(password, user.getPassword())) {
+        UserDTO savedUser = loadUserByUsername(username);
+        userCacheRepository.setUser(savedUser);
+        if (!encoder.matches(password, savedUser.getPassword())) {
             throw new TicketApplicationException(ErrorCode.INVALID_PASSWORD);
         }
 
