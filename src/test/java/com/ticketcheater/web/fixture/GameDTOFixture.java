@@ -4,7 +4,6 @@ import com.ticketcheater.web.dto.GameDTO;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public class GameDTOFixture {
 
